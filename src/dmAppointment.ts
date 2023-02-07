@@ -34,7 +34,7 @@ const grammar: Grammar = {
 
 const getEntity = (context: SDSContext, entity: string) => {
   // lowercase the utterance and remove tailing "."
-  let u = context.recResult[0].utterance.toLowerCase().replace(/.$/g, "");
+  let u = context.recResult[0].utterance.toLowerCase().replace(/\.$/g, "");
   if (u in grammar) {
     if (entity in grammar[u].entities) {
       return grammar[u].entities[entity];
