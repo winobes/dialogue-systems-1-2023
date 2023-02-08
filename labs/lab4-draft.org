@@ -18,10 +18,22 @@ To train the model for the first time, choose "Training jobs" in the navigation 
 ** Deploy the model
 In order to use your trained model in your dialogue system, you first need to deploy it. Choose "Deploying a model" in the navigation menu and then "Add deployment". Again, as deployment name you can choose *appointment*. (When you re-train your model later on and want to re-deploy it, overwrite the existing deployment name.)
 
-Once the model is deployed, click the deployment and then "Get prediction URL". Copy the displayed prediction URL and paste it into (...)
+** Integrate the model
+To simplify integration, you can upgrade your codebase as follows:
+- In the github web interface for your fork, create a new branch with the name "azure-nlu". As source, choose the "azure-nlu" branch from the GU-CLASP repo.
+- In your local working copy, fetch branches. If you use the "git" command-line interface, you can run "git fetch".
+- Switch your local working copy to the new branch, e.g. "git checkout azure-nlu". If there are any conflicts, you will need to resolve them.
+
+Then, configure your NLU by adding the following attributes in static/index.html:
+- data-azure-nlu-key: This is KEY 1 for your Azure language instance. Usually the same as data-azure-key.
+- data-azure-nlu-url: You get this from the deployment section of CLU. Click the deployment and then "Get prediction URL".
+- data-azure-nlu-project-name: Your project name in CLU, e.g. *appointment*.
+- data-azure-nlu-deployment-name: Your deployment name in CLU, e.g. *appointment*.
+
+Finally, you need to rewire the logic in your code that concerns intents and entities. Results from CLU are available in the field "nluResult" in the context.
 
 ** Test
-Validate via manual testing that your dialogue system now uses the new statistical NLU rather than the old "grammar". At this stage, note that only two intents are supported, and no entities. This is fine for now.
+Validate via manual testing that your dialogue system now uses your deployed NLU model rather than the old "grammar". At this stage, note that only two intents are supported, and no entities. This is fine for now.
 
 ** Add entities
 Go back to the schema definition and add the entities that you need, e.g. for meeting title, meeting time, yes/no, etc. Again, choose entity names corresponding to those in your code.
