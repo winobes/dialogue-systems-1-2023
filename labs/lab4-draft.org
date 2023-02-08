@@ -3,21 +3,32 @@
 #+TITLE: Lab IV. Natural language understanding
 
 * Task 1: Integrate a statistical NLU in your dialogue system
-In lab 2, you used a simplistic mapping (called "grammar" in the code) from user utterances to intents and entities. In the first task of this lab, you will replace this grammar with a statistical NLU trained and deployed using Microsoft Azure.
+In lab 2 (basic dialogue management), you used a simplistic mapping (called "grammar" in the code) from user utterances to intents and entities. In the first task of this lab, you will replace this grammar with a statistical NLU trained and deployed using Microsoft Azure.
 
 ** Create an NLU project in Azure
 Go to https://language.cognitive.azure.com/ and ensure that you are signed in with your Azure account. Choose Create new -> Conversational language understanding. As part of this, you may need to create a new Azure language resource. Note that resource names are unique across the entire Azure platform, so you may need to include some arbitrary digits or numbers in it (e.g. language_resource_57372).
 
 As project name, you can e.g. enter *appointment*.
 
-* Task 2:
+** Add intents
+Create two intents, corresponding to "create a meeting" and "who is X". Make sure to use the same names for these intents as you do in your code. Choose "Data labeling" in the navigation menu to the left and add 10 training examples for each intent. (At this stage, you can come up with examples on your own. You can improve the training data later.)
 
-** Train the model
-Create at least two different intents that are relevant in your course project. Then, choose "Data labeling" in the navigation menu to the left and add 10 training examples for each intent. (At this stage, you can come up with examples on your own. You can improve the training data later.)
-
-To train the model for the first time, choose "Training jobs" in the navigation menu and select "Train a new model". *Important*: As model name, again enter *speechstate*.
-
-When you re-train the model later on, select "Overwrite an existing model" and choose **speechstate**.
+To train the model for the first time, choose "Training jobs" in the navigation menu and select "Train a new model". As model name, you can choose *appointment*. (When you re-train the model later on, select "Overwrite an existing model".)
 
 ** Deploy the model
+In order to use your trained model in your dialogue system, you first need to deploy it. Choose "Deploying a model" in the navigation menu and then "Add deployment". Again, as deployment name you can choose *appointment*. (When you re-train your model later on and want to re-deploy it, overwrite the existing deployment name.)
 
+Once the model is deployed, click the deployment and then "Get prediction URL". Copy the displayed prediction URL and paste it into (...)
+
+** Test
+Validate via manual testing that your dialogue system now uses the new statistical NLU rather than the old "grammar". At this stage, note that only two intents are supported, and no entities. This is fine for now.
+
+** Add entities
+
+
+* Task 2: Improve NLU
+Based on insights from testing your own system, and from having the system tested by peer students, you should now try to improve NLU coverage.
+
+* Task 3: Train separate NLU for your project
+...
+Create at least two different intents that are relevant in your course project.
