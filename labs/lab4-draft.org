@@ -3,7 +3,7 @@
 #+TITLE: Lab IV. Natural language understanding
 
 * Task 1: Integrate a statistical NLU in your dialogue system
-In lab 2 (basic dialogue management), you used a simplistic mapping (called "grammar" in the code) from user utterances to intents and entities. In the first task of this lab, you will replace this grammar with a statistical NLU trained and deployed using Microsoft Azure.
+In lab 2 (basic dialogue management), you used a simplistic mapping (called "grammar" in the code) from user utterances to intents and entities. In the first task of this lab, you will replace this grammar with a statistical NLU trained and deployed using Conversational Language Understanding (CLU) in Azure.
 
 ** Create an NLU project in Azure
 Go to https://language.cognitive.azure.com/ and ensure that you are signed in with your Azure account. Choose Create new -> Conversational language understanding. As part of this, you may need to create a new Azure language resource. Note that resource names are unique across the entire Azure platform, so you may need to include some arbitrary digits or numbers in it (e.g. language_resource_57372).
@@ -24,11 +24,19 @@ Once the model is deployed, click the deployment and then "Get prediction URL". 
 Validate via manual testing that your dialogue system now uses the new statistical NLU rather than the old "grammar". At this stage, note that only two intents are supported, and no entities. This is fine for now.
 
 ** Add entities
+Go back to the schema definition and add the entities that you need, e.g. for meeting title, meeting time, yes/no, etc. Again, choose entity names corresponding to those in your code.
 
+Note that CLU supports different methods for extracting entities. You will need to choose the most relevent method for each entity.
+
+Note also that meeting title is a bit trickier than other entities, since almost anything can be a title. Don't worry about choosing the "wrong" method for an entity; mhatever method you choose, you can always improve things later.
 
 * Task 2: Improve NLU
 Based on insights from testing your own system, and from having the system tested by peer students, you should now try to improve NLU coverage.
 
-* Task 3: Train separate NLU for your project
-...
-Create at least two different intents that are relevant in your course project.
+* Submission
+Export your NLU project by choosing "Projects" in the navigation menu to the left, then select your project and click Export. (You might need to unblock a pop-up window.) Save the exported content as a JSON file (.json extension).
+
+Submit:
+- link to your forked repo
+- URL of the deployed app
+- your exported NLU model (JSON file)
