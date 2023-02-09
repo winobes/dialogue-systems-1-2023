@@ -4,7 +4,7 @@ import * as ReactDOM from "react-dom";
 import { createMachine, assign, actions, State } from "xstate";
 import { useMachine } from "@xstate/react";
 import { inspect } from "@xstate/inspect";
-import { dmMachine } from "./dmColourChanger";
+import { dmMachine } from "./dmJokes";
 
 import createSpeechRecognitionPonyfill from "web-speech-cognitive-services/lib/SpeechServices/SpeechToText";
 import createSpeechSynthesisPonyfill from "web-speech-cognitive-services/lib/SpeechServices/TextToSpeech";
@@ -285,8 +285,8 @@ function App({ domElement }: any) {
         let content = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xml:lang="en-US"><voice name="${context.voice.name}">`;
         content =
           content +
-          (process.env.REACT_APP_TTS_LEXICON
-            ? `<lexicon uri="${process.env.REACT_APP_TTS_LEXICON}"/>`
+          (context.parameters.ttsLexicon
+            ? `<lexicon uri="${context.parameters.ttsLexicon}"/>`
             : "");
         content = content + `${context.ttsAgenda}</voice></speak>`;
         const utterance = new context.ttsUtterance(content);
@@ -308,7 +308,7 @@ function App({ domElement }: any) {
           },
         });
         context.asr = new SpeechRecognition();
-        context.asr.lang = process.env.REACT_APP_ASR_LANGUAGE || "en-US";
+        context.asr.lang = context.parameters.asrLanguage || "en-US";
         context.asr.continuous = true;
         context.asr.interimResults = true;
         context.asr.onresult = function (event: any) {
