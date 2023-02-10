@@ -26,9 +26,12 @@
 2. Fork and clone the example project (this project):
    https://github.com/GU-CLASP/dialogue-systems-1-2023. Keep an eye on
    the changes in the repo, it is still work in progress!
-3. Install *yarn dependency manager* and all the dependencies:
+3. Install *yarn dependency manager* (you might have to use 'sudo' for this to work):
    #+begin_src
    npm install --global yarn
+   #+end_src
+   and all the dependencies:
+   #+begin_src
    yarn
    #+end_src
 4. Modify the file ~static/index.html~ with desired Azure Key and app languages.
