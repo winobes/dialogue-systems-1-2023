@@ -21,8 +21,9 @@ In order to use your trained model in your dialogue system, you first need to de
 ** Integrate the model
 Upgrade your codebase to get NLU results from Azure by merging a change that we have prepared, as follows:
 - In the github web interface, create a new branch for your fork, with the name "azure-nlu". As source, choose the "azure-nlu" branch from the GU-CLASP repo.
-- In your local working copy, fetch branches. If you use the "git" command-line interface, you can run "git fetch".
-- Switch your local working copy to the new branch, e.g. "git checkout azure-nlu". If there are any conflicts, you will need to resolve them.
+- If you have any uncommited changes in your local working copy, commit them.
+- In your local working copy, fetch branches. If you use the "git" command-line interface, you can run "git fetch --all".
+- Merge the new branch, e.g. "git merge azure-nlu". If there are any conflicts, you will need to resolve them.
 
 Then, configure your NLU by adding the following attributes in static/index.html:
 - data-azure-nlu-key: This is KEY 1 for your Azure language resource. (Note: Note same as for your speech service.)
