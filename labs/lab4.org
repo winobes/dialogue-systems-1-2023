@@ -26,7 +26,7 @@ Upgrade your codebase to get NLU results from Azure by merging a change that we 
 - Merge the new branch, e.g. "git merge azure-nlu". If there are any conflicts, you will need to resolve them.
 
 Then, configure your NLU by adding the following attributes in static/index.html:
-- data-azure-nlu-key: This is KEY 1 for your Azure language resource. (Note: Note same as for your speech service.)
+- data-azure-nlu-key: This is KEY 1 for your Azure language resource. (Note: *Not* same as for your speech service.)
 - data-azure-nlu-url: You get this from the deployment section of CLU. Click the deployment and then "Get prediction URL".
 - data-azure-nlu-project-name: Your project name in CLU, e.g. *appointment*.
 - data-azure-nlu-deployment-name: Your deployment name in CLU, e.g. *appointment*.
