@@ -4,7 +4,7 @@ import * as ReactDOM from "react-dom";
 import { createMachine, assign, actions, State } from "xstate";
 import { useMachine } from "@xstate/react";
 import { inspect } from "@xstate/inspect";
-import { dmMachine } from "./dmJokes";
+import { dmMachine } from "./dmAppointment";
 
 import createSpeechRecognitionPonyfill from "web-speech-cognitive-services/lib/SpeechServices/SpeechToText";
 import createSpeechSynthesisPonyfill from "web-speech-cognitive-services/lib/SpeechServices/TextToSpeech";
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === "development") {
   });
 }
 
-const defaultPassivity = 10;
+const defaultPassivity = 5;
 
 const machine = createMachine(
   {
@@ -278,7 +278,7 @@ function App({ domElement }: any) {
         /* console.log('Ready to receive a voice input.'); */
       },
       recStop: (context) => {
-        context.asr.abort();
+        context.asr.abort?.();
         /* console.log('Recognition stopped.'); */
       },
       ttsStart: (context) => {

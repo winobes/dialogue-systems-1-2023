@@ -24,6 +24,12 @@ interface Settings {
   azureKey: string;
 }
 
+interface ChatInput {
+  past_user_inputs: string[];
+  generated_responses: string[];
+  text: string;
+}
+
 interface SDSContext {
   parameters: Parameters;
   asr: SpeechRecognition;
@@ -36,7 +42,11 @@ interface SDSContext {
   audioCtx: any;
 
   title: any;
-  topic: string;
+  topic: string | undefined;
+  count: number;
+
+  chatInput: ChatInput;
+  chatResponse: any;
 }
 
 type SDSEvent =
