@@ -1,2 +1,47 @@
-#+OPTIONS: num:nil
-#+TITLE: Lab V. Advanced dialogue management[[labs/lab1.org]]
+#+OPTIONS: toc:t num:nil
+#+TITLE: Lab V. Advanced dialogue management
+
+* Part 1. Improving your voice interface
+In this part of the lab you will need to improve ~dmAppointment.ts~
+application from Lab II. Create a copy of it ~dmAppointmentPlus.ts~ and
+'route' ~index.tsx~ to it. Now you will need to implement some
+improvements.
+
+*Note:* try not to copy and paste the same code, use functions to abstract
+certain blocks.
+
+1. Make sure that system handles unexpected input (out-of-grammar situations). 
+2. A opportunity to say "help" at any point when system is recognising
+   something. You should provide a help message (anything you like)
+   and return the user to the state where they were before asking for
+   help.
+3. In a stepwise fashion change the formulations for your re-prompts
+   in case of noinput (ASR sends ~NOINPUT~) event and out-of-grammar
+   situations.
+4. If the user is silent and not reacting to 3 reprompts, return to
+   the ~init~ state.
+
+* Part 2. Confidence threshold
+1. Implement confidence threshold for *speech recognition* of user
+   inputs.
+   - If :: the confidence for the top-ranked recognition hypothesis is
+     higher than threshold X
+   - then ::  assume that the speech recogniton is correct is correct
+     and proceed
+   - else :: ask the user whether the top-ranked recognition
+     hypothesis is what the user wants.  
+
+2. Test the system and adjust the threshold.
+
+3. Can you implement a similar threshold for *natural language
+   understanding*? How can it be combined with the ASR threshold?
+   Justify your choice and provide a sketch implementation.
+
+   #+begin_quote
+   *Note*: The system's grounding question can to be perceptual ("Did you say 'create a meeting'?") or semantic (You want to create a meeting, is that correct?).
+   #+end_quote
+  
+
+* Submission
+Redeploy your app to Github pages and submit two links: 1) Github
+pages URL and 2) URL of your repository.
