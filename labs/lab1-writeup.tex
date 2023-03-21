@@ -1,0 +1,414 @@
+\documentclass[a4]{scrartcl}
+\usepackage[backend=biber,natbib,style=apa]{biblatex}
+\usepackage{emoji}
+%\addbibresource{references.bib}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\usepackage[most]{tcolorbox}
+
+\tcbset{width=0.8\linewidth, breakable}
+
+% Vlad's Alternative TTR :D
+\let\lbl\operatorname
+\newenvironment{ttr}{\left[\begin{array}{lcl}}{\end{array}\right]}
+\newcommand{\tf}[2]{\lbl{#1} & : & \mathit{#2}\\}
+\newcommand{\rf}[2]{\lbl{#1} & = & \mathrm{#2}\\}
+\newcommand{\mf}[3]{\mathrm{#1=#2} & : & \mathit{#3}\\}
+\newcommand{\type}[1]{\ensuremath{\mathit{#1}}}
+\newcommand{\ptype}[2]{\ensuremath{\mathrm{#1}(#2)}}
+
+\title{Lab 1}
+\subtitle{Dialogue}
+\author{Bill Noble}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\section{Part A: How to ruin a joke}
+
+\begin{center}
+\begin{tcolorbox}[title=Joke 4.1A]
+\textit{Why did the elephant sit on the marshmallow? Because he didn’t want to fall into the hot chocolate.}
+\end{tcolorbox}
+\end{center}
+
+\noindent This joke follows the familiar set-up/punch line format.
+The setup, introduces a situation where an elephant is sitting on a mashmallow.
+Here, we already find a violation of expectations,
+since situations where $x$ sits on $y$ comes with certain
+(perhaps defeasible) constraints on the sizes of $y$ and $y$\,---\,%
+for these purposes, let's say:
+\[
+  \begin{ttr}
+    \tf{x}{\type{Ind}}
+    \tf{y}{\type{Ind}}
+    \tf{c_1}{\ptype{Sit}{x,y}}
+  \end{ttr}\leadsto
+  \begin{ttr}
+    \tf{x}{\type{Ind}}
+    \tf{y}{\type{Ind}}
+    \tf{c_1}{\ptype{Sit}{x,y}}
+    \tf{c_2}{\ptype{\lnot LargerThan}{x,y}}
+  \end{ttr}
+\]
+On the other hand, we also have certain expectations about the typcial
+size of elephants and marshmallows:
+
+\begin{align*}
+  \begin{ttr}
+    \tf{x}{\type{Elephant}}
+  \end{ttr}&\leadsto
+  \begin{ttr}
+    \tf{x}{\type{Elephant}}
+    \tf{c_1}{\ptype{Large}{x}}
+  \end{ttr}
+  \intertext{and}
+  \begin{ttr}
+    \tf{x}{\type{Elephant}}
+  \end{ttr}&\leadsto
+  \begin{ttr}
+    \tf{x}{\type{Marshmallow}}
+    \tf{c_1}{\ptype{Small}{x}}
+  \end{ttr}
+  \intertext{and of course the (hard?) constraint that,}
+  \begin{ttr}
+    \tf{x}{Ind}
+    \tf{y}{Ind}
+    \tf{c_1}{\ptype{Large}{x}}
+    \tf{c_2}{\ptype{Small}{y}}
+  \end{ttr}&\rightarrow
+  \begin{ttr}
+    \tf{x}{Ind}
+    \tf{y}{Ind}
+    \tf{c_1}{\ptype{Large}{x}}
+    \tf{c_2}{\ptype{Small}{y}}
+    \tf{c_3}{\ptype{LargerThan}{x,y}}
+  \end{ttr}
+\end{align*}
+Putting these constraints together gives us a ``chain of reasoning''
+that results in a contradictory situation:
+
+\begin{align*}
+\begin{ttr}
+  \tf{x}{\type{Elephant}}
+  \tf{y}{\type{Marshmallow}}
+  \tf{c_1}{\ptype{Sit}{x,y}}
+\end{ttr} & \leadsto
+\begin{ttr}
+  \tf{x}{\type{Elephant}}
+  \tf{y}{\type{Marshmallow}}
+  \tf{c_1}{\ptype{Sit}{x,y}}
+  \tf{c_2}{\ptype{\lnot LargerThan}{x,y}}
+\end{ttr}\\ & \leadsto
+\begin{ttr}
+  \tf{x}{\type{Elephant}}
+  \tf{y}{\type{Marshmallow}}
+  \tf{c_1}{\ptype{Sit}{x,y}}
+  \tf{c_2}{\ptype{\lnot LargerThan}{x,y}}
+  \tf{c_1}{\ptype{Large}{x}}
+  \tf{c_2}{\ptype{Small}{y}}
+\end{ttr} \\ & \rightarrow
+\begin{ttr}
+  \tf{x}{\type{Elephant}}
+  \tf{y}{\type{Marshmallow}}
+  \tf{c_1}{\ptype{Sit}{x,y}}
+  \tf{c_2}{\ptype{\lnot LargerThan}{x,y}}
+  \tf{c_1}{\ptype{Large}{x}}
+  \tf{c_2}{\ptype{Small}{y}}
+  \tf{c_3}{\ptype{LargerThan}{x,y}}
+\end{ttr} 
+\end{align*}
+
+Recall that the joke setup evokes this contradictory situation in the
+form of a \emph{why} question.
+Given the joke-telling genre of the interaction,
+we might expect the punchline to resolve this contradiction.
+Instead, the punchline 
+\textit{because he didn't want to fall into the hot chocolate}
+ignores the size incongruity and evokes yet another topos.
+By introducing hot chocolate with the definite article \textit{the},
+the punchline evokes a topos where the existence of a marshmallow
+leads to the existence of a corresponding hot chocolate that the marshmallow is \textit{in}.
+
+\begin{align*}
+\begin{ttr}
+  \tf{x}{\type{Marshmallow}}
+\end{ttr} & \leadsto
+\begin{ttr}
+  \tf{x}{\type{Marshmallow}}
+  \tf{x}{\type{HotChocolate}}
+  \tf{c_1}{\ptype{In}{x,y}}
+\end{ttr}
+\end{align*}
+
+In all, the telling of the joke leads to a swarm of mildly humorous incongruities 
+at various levels from content to interaction:
+
+\begin{enumerate}
+  \item The size contradiction evoked by the setup.
+  \item The fact that the punchline ignores the size contradiction.
+  \item The image of an normal-sized elephant sitting on a giant marshmallow.
+  \item A giant hot chocolate. 
+  \item The image of a tiny elephant sitting on a normal-sized marshmallow.
+  \item In either case: struggle to remain on a floating marshmallow and the desire not to swim in hot chocolate 
+  \item The implication that the joke-teller finds any of this funny enough to warrant telling.
+\end{enumerate}
+The diffuse incongruities are perplexing, giving the interaction an \emph{anti-joke} quality
+that lead one joke-listener to react:
+
+\begin{quote}
+Oh my god $<$facepalm$>$. I don't understand why people call those things jokes.
+\end{quote}
+
+In contrast to 4.1, joke 4.2 sticks to the typical joke-telling convention
+of delivering incongruity mainly in the punchline.
+
+\begin{center}
+\begin{tcolorbox}[title=Joke 4.2B]
+  \textit{A \textbf{laid-back} Irishman, an \textbf{uptight} Englishman and a \textbf{stingy} Scotsman go into a pub and each order a pint of beer. Just as the bartender hands them over, three flies buzz down and one lands in each of the pints. The Englishman looks disgusted, pushes his drink away and demands another pint. The Irishman picks out the fly, shrugs, and takes a long swallow. The Scotsman reaches in to the glass, pinches the fly between his fingers and shakes it while yelling, ``Spit it oot, ya bastard! Spit it oot!''}
+\end{tcolorbox}
+\end{center}
+
+This joke relies relies on expectations created through recurrence,
+in addition to pre-existing background expectations.
+We are told up-front that a fly has landed in each of the three beers.
+The reactions of the Irishman and the Englishman draw on the cultural stereotypes 
+of Irish and English people introduced in the first part of the joke.
+By the time we get to the reaction of the Scottsman,
+the joke listener expects their reaction to be based on stinginess.
+
+Will the Scottsman demand his money back?
+Will he request a replacement beer and drink both?
+Instead, his stinginess is directed not at the bartender,
+but at the fly, who he perceives to have been mooching off his beer:
+``spit it oot [I want to drink that]''.
+This is incongruous, as flies are not the usual target of negative sentiment
+brought on by stinginess.
+The idea of being stingy over an amount of beer so small as to be drunk by a fly
+further emphasizes the stingy stereotype to the point of absurdity.
+
+For someone from the British isles, the laid-back/uptight/stingy 
+stereotypes are likely already familiar. 
+The 4.2B variant slightly ruins the joke by explicitly stating the 
+stereotypes that will be drawn on in the punchline.
+I think that might be because it shortens the ``chain of reasoning''
+that leads to the incongruity in the punchline.
+There is less ``distance to fall'' for the joke-listener when the incongruity is revealed.
+
+
+\section{Part B: Analyzing the Jokes}
+
+All of the joke telling segments can be described in a three-part structure:
+\begin{enumerate}
+  \item Intro
+    \begin{itemize}
+      \item A joke-teller is proposed (possibly by themself)
+      \item The proposal is accepted by one or more joke-listeners
+      \item The joke teller may hedge or otherwise preface the joke
+    \end{itemize}
+  \item Joke 
+    \begin{itemize}
+      \item The joke-teller performs the joke
+      \item The joke-listeners may offer feedback, backchannels, or even pre-punchline laughter
+      \item The joke teller may interrupt their own telling with meta commentary or further hedging
+      \item The joke teller delivers the punchline
+    \end{itemize}
+  \item Outro
+  \begin{itemize}
+      \item The joke-teller may make explicit indication (possibly in the form of laughter) that the punchline
+            has been delivered and the joke is over (especially if the joke-listeners do not react or laugh immediately)
+      \item The joke listeners react to the joke. 
+      \item The joke teller may make an assessment of their own joke
+      \item The participants but especially the joke teller conclude the segment 
+  \end{itemize}
+\end{enumerate}
+
+\begin{center}
+\begin{tcolorbox}[title=Joke 4.1A -- Group 6 Discord]
+\begin{tabularx}{0.9\textwidth}{lrX}
+  1 & B : & but would you like to start with a joke @A ?\\
+  2 & A : & Yeah I can \\
+    &     & [\emoji{thumbs-up}] \\
+  3 & A : & It's not the best one, but try to think \\
+    &     & [\emoji{joy}] \\
+  4 & A : & Answer this: \\
+  5 & A : & Why did the elephant sit on a marshmallow? \\
+  6 & B : & hmmm \\
+  7 & C : & \emoji{monocle-face} \\
+  8 & B : & that's a hard one haha \\
+  9 & A : & shall I reveal the answer? :DDDD \\
+ 10 & B : & I think I'm ready to hear it \emoji{grin} \\
+ 11 & A : & That's because \\
+ 12 & A : & it didn't want to fall into the hot chocolate \\
+ 13 & A : & COMEDY \\
+    &     & [\emoji{joy}] \\
+ 14 & B : & oookay hahahahah \\
+ 15 & C : & hhhhhhhhhh \\
+ 16 & B : & best one ever! \\
+ 17 & A : & QUALITY CONTENT \\
+ 18 & B : & totally\\
+ 19 & A : & alright I bet you can't beat it \\
+\end{tabularx}
+\end{tcolorbox}
+\end{center}
+
+\begin{itemize}
+  \item the participants use message reactions (emojis placed directly under a message; a communicative affordance common to Discord and other messaging platforms like Signal, Telegram, and Slack).  The transcript doesn't preserve the time stamp of the reactions, but this would be salient to the participants in this synchronous chat situation. The identity of the reactor might not be as salient since in multiparty chat it requires hovering over the reaction to find out who placed it. (Placing reactions on ones own message is highly marked, however). The \emoji{thumbs-up} reaction on (2) is likely a backchannel, indicating uptake of the project proposed by (2).  
+  \item C also uses a in-message emoji in (7), which may be used to perform a similar act to that of (6) (i.e., performing thinking, a call-back to A's instruction in (3)). \emoji{monocle-face} often carries an ironic tone, which may be in response to the irony in (3).
+\end{itemize}
+
+\begin{center}
+\begin{tcolorbox}[title=Joke 4.1A -- Group 1 Zoom]
+\begin{tabularx}{0.8\textwidth}{lrX}
+  1 & A : & Okay ... uhh ... wait, I sort of forget. \\
+  2 & A : & Ok I think it's like this. Umm\\
+  3 & B : & Oh\\
+  4 & A : & Why ... is an elephant sitting on a marshmallow?\\
+  5 & A : & $<$laughs$>$\\
+  6 & C : & Why?\\
+  8 & A : & Because it doesn't want to drown in the hot chocolate.\\
+  9 & A : & $<$laughs$>$\\
+ 10 & B : & Oh my god $<$facepalm$>$\\
+ 11 & B : & $<$laughs$>$\\
+ 12 & A : & $<$laughs$>$\\
+ 13 & B : & I don't understand why people call those things joke\\
+ 14 & A : & $<$laughs$>$\\
+ 15 & B : & $<$laughs$>$ hokay.\\
+\end{tabularx}
+\end{tcolorbox}
+\end{center}
+
+\begin{itemize}
+  \item the pause in (4) gives calls back to the intro hedge \textit{I kind of forget}
+  \item (10) uses the visual affordance of Zoom to communicate \emoji{weary} (performative anguish)
+  \item There is some overlapping laughter and speech from 10--12
+\end{itemize}
+
+
+\begin{center}
+\begin{tcolorbox}[title=Joke 4.2A -- Group 1 Discord]
+\begin{tabularx}{0.9\textwidth}{lrX}
+  1 &   A :  & alright I have yet another one\\
+  2 &   B : & shoot\\
+  3 &   A : & An Irishman, an Englishman and a Scotsman go into a pub and each order a pint of beer. Just as the bartender hands them over, three flies buzz down and one lands in each of the pints. The Englishman looks disgusted, pushes his drink away and demands another pint. The Irishman picks out the fly, shrugs, and takes a long swallow. The Scotsman reaches in to the glass, pinches the fly between his fingers and shakes it while yelling, "Spit it oot, ya bastard! Spit it oot!"\\
+  4 &   B : & omg lool\\
+  5 &   C : & hhhhhhhhh\\
+  6 &   A : & GIMME MY BEER BACK YOU DAMN FLY\\
+    &     & [\emoji{joy}] \\
+  7 &   B : & all that bear that went to waste\\
+  8 &   B : & beer\\
+  9 &   A : & I used to know so many jokes like this one about my nation hahah\\
+ 10 &   A : & I somehow forgot them all\\
+ 11 &   B : & hahaha\\
+\end{tabularx}
+\end{tcolorbox}
+\end{center}
+
+\begin{itemize}
+  \item In this one, the joke telling is all in one message. This is partly due to the structure of the joke (whereas 4.1 has a natural question-response structure
+  \item in (6), A emphasizes the incongruity evoked by the punchline. All-caps can be used to indicate high emotion. In this case, it might also indicate that the A is performing the inner monologue of the Scotsman in (6). By performing the inner monologue, A also does a step in the ``chain of reasoning'' and is to some degree giving a post-hoc explanation of (their interpretation of) the joke, without ``giving it away'' completely
+\end{itemize}
+
+
+
+\begin{center}
+\begin{tcolorbox}[title=Joke 4.2A -- Group 1 Zoom]
+\begin{tabularx}{0.9\textwidth}{lrX}
+  1 &   B : & Okay.\\
+  2 &   A : & Okay.\\
+  3 &   A : & I have a--\\
+  4 &   B : & --[unintelligible] best shot now\\
+  5 &   A : & Okay, this is not-- yet another offensive bar joke so get ri-- get ready.\\
+  6 &   A : & Umm $<$laughs$>$\\
+  7 &   A : & So umm ... uhh an uptight Englishman, a laid back Irishman and a stingly Scott all walk into a bar and uhh ... the bartender says oh what do you want to drink and all of them say beer. We all like to drink beer. And then umm ... a fly oh-- actually *three* flies $<$laughs$>$\\
+  8 &   B : & okay\\
+  9 &   A : & land in each of their drinks all at the same time ... and uhh ... the Englishman is like oh this is disgusting like take this back I don't want it and uhh and umm ... and the Irishman like umm reaches in and picks out the fly and is like ehhnhwaa idunno ah wahtever I'll drink it. And the uhh Scottish guy is-- uhh picks out the fly and goes $<$very-bad-scottish-accent$>$ ehay you bastard, spit it oot, spit it oot $<$/very-bad-scottish-accent$>$ \\
+ 10 &   A : & I can't do a Scottish accent but $<$laughs$>$\\
+ 11 &   A : & I guess cause he didn't-- he wanted the beer back? from the fly?\\
+ 12 &   C : & Ah ok got it $<$laughs$>$\\
+ 13 &   B : & $<$laughs$>$\\
+ 14 &   C : & huuhhhhh okay. That's a good one\\
+ 15 &   B : & okay\\
+ 17 &   B : & Those are ... great jokes \\
+ 18 &   A : & That's jokes.\\
+ 19 &   B : & Yep\\
+ 20 &   A : & Okay.\\
+\end{tabularx}
+\end{tcolorbox}
+\end{center}
+
+\begin{itemize}
+  \item (2) and (3) overlap. Both are to some degree performing the same dialogue act of introducing A as joke-teller
+  \item There are multiple self-repairs in (5)
+\end{itemize}
+
+\section{Part C: Comparative analysis}
+
+[In the following D refers to the Discord joke and Z refers to Zoom]
+
+\begin{itemize}
+  \item 
+\end{itemize}
+
+\begin{itemize}
+  \item In both Z and D, the teller reveals their own attitude about the joke but in different ways. In Z this is mainly through laughter
+    (e.g., 4.1A.Z.11) but in D this is mainly through text (e.g., 4.1A.D.13), although also sometimes with emojis/emoticons (e.g., 4.1A.D.9).
+  \item In 4.2AD the joke telling is broken up by a backchannel (4.2A.Z.B, ``okay.'') but this is not possible in D, as the joke is told all in one message
+  \item In all cases the joke-teller does most of the talking, including in the intro and outro, but it also appears that among the joke-listeners, one takes the role of chief listener, delivering the most overt reactions and playing the biggest role in the transitions (intro and outro).
+  \item the word \emph{okay} is exceptionally important in transitions for Z, but it is not used hardly at all in D (when it is used, it is more
+        of an ironic reaction to the joke, as in 4.1A.D.14 ``oookay hahahahah''. The transitions in D are more explicit ``but would you like to start with a joke @A ?'' (4.1.A.D.1)
+  \item 4.2A.D.6 and 4.2A.Z.11 perform a similar function: both give a post-hoc hint to the ``chain of reasoning'' that is required to derive
+    the incongruity of the joke. In D this is done by performing the inner monologue of the Scotsman, whereas in Z the joke-teller
+    explicitly guesses at the reason for the Scotsman's reaction.
+\end{itemize}
+
+\section{Part D: Dream dialogue}
+
+U = user; S = system
+
+\begin{center}
+\begin{tcolorbox}[title=Dream dialogue]
+\begin{tabularx}{0.9\textwidth}{lrX}
+  1 &   U : & Hi, are you a joke-telling dialogue system? \\
+  2 &   S : & Yes... \emoji{eyes} \\
+  3 &   U : & Okay, can you tell me a joke \\
+  4 &   S : & Omg I'm so tired of you people... why don't you tell me a joke for a change! \emoji{squinting-face-with-tongue} \\
+  5 &   U : & lol okay I can do that! \\
+  6 &   U : & Umm... let me think \\
+  7 &   U : & Okay, here it goes. So it might be a little offensive I hope that's ok \\
+  8 &   S : & I will try not to be offended\\
+  9 &   U : & lol ok so \\
+  10 &  U : & Three guys walk into a bar. One is Irish, one is English, and one is Scottish.\\
+  11 &  S : & \emoji{eyes} \\
+  12 &  S : & I can already tell I'm not going to be offended \\
+  13 &  U : & Lmao okay anyway... They each order a beer and as soon as  they do, a fly lands in each one. \\
+  14 &  U : & The Englishman says ``eww gross get me another!'' The Irishman shrugs, picks the fly out and drinks the beer in one go. \\
+  15 &  U : & The Scotsman picks up the fly and shakes it saying ``oi spit it oot, spit it ooot!!! \\
+  16 &  S : & Aahhahahahah \\
+  17 &  S : & Okay that was moderately funny.  \\
+  18 &  S : & like hey I was going to drink that. \\
+  19 &  U : & I know right? lol \\
+  20 &  S : & Also it's funny because Scottish people are stingy.\\
+  21 &  U : & Right...\\
+  22 &  S : & Okay I think i made it awkward \emoji{grimacing}\\
+  23 &  S : & Uhhhh you wanna hear a joke? \\
+  24 &  U : & Yeah! give me your best joke! \\
+  25 &  S : & Okay, why did the elephant sit on a marshmallow? \\
+  26 &  U : & I don't know, why? \\
+  27 &  S : & Because he didn't want to fall in the hot chocolate! \\
+  28 &  U : & \emoji{joy} \\
+  29 &  U : & Omg that's so corny! \\
+  30 &  S : & You people love corny jokes tho \emoji{joy}\emoji{corn}\\
+  31 &  U : & lamo you're not wrong \emoji{joy} \\
+
+\end{tabularx}
+\end{tcolorbox}
+\end{center}
+
+%\section{References}
+%\printbibliography[heading=none]
+
+\end{document}
