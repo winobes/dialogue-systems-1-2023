@@ -42,6 +42,7 @@ interface SDSContext {
   audioCtx: any;
 
   title: any;
+  victim: any;
   topic: string | undefined;
   count: number;
 
