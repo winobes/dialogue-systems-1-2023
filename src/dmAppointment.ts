@@ -57,15 +57,20 @@ const grammar: Grammar = {
 };
 
 const getEntity = (context: SDSContext, entity: string) => {
-  // lowercase the utterance and remove tailing "."
-  let u = context.recResult[0].utterance.toLowerCase().replace(/\.$/g, "");
-  if (u in grammar) {
-    if (entity in grammar[u].entities) {
-      return grammar[u].entities[entity];
+  for (var ent of context.nluResult.prediction.entities){
+    if (ent.category == entity) {
+      return ent.text;
     }
   }
+  return false; 
+}
+
+const isIntent = (context: SDSContext, intent: string) => {
+  if (context.nluResult.prediction.topIntent == intent) {
+    return true;
+  }
   return false;
-};
+}
 
 const isCreateMeeting = (context: SDSContext) => {
   // lowercase the utterance and remove tailing "."
@@ -128,13 +133,13 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
         RECOGNISED: [
           {
             target: "createMeeting",
-            cond: (context) => isCreateMeeting(context),
+            cond: (context) => isIntent(context, "create a meeting"),
           },
           {
             target: "tellWhoIs",
-            cond: (context) => !!getWhoIs(context),
+            cond: (context) => isIntent(context, "who is") && !!getEntity(context, "victim"),
             actions: assign({
-              victim: (context) => getWhoIs(context),
+              victim: (context) => getEntity(context, "victim"),
             }),
           },
           {
@@ -145,7 +150,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
       },
       states: {
         prompt: {
-          entry: say("Hi, person. From here, you can create a meeting by saying 'create a meeting' or you can ask me who someone is."),
+          entry: say("Hi there. From here, you can create a meeting or ask me who someone is."),
           on: { ENDSPEECH: "ask" },
         },
         ask: {
@@ -196,7 +201,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
         saywhois: {
           entry: send((context) => ({
             type: "SPEAK",
-            value: `${context.victimInfo.Abstract.slice(0,100)}`,
+            value: `${context.victimInfo.Abstract}`,
           })),
         },
       }
@@ -208,14 +213,14 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
         RECOGNISED: [
           {
             target: "askDay",
-            cond: (context) => isAffirmative(context),
+            cond: (context) => isIntent(context, "affirmative"),
             actions: assign({
               title: (context) => `meeting with ${context.victim}`
             }),
           },
           {
             target: "idle",
-            cond: (context) => isNegatory(context),
+            cond: (context) => isIntent(context, "negatory"),
           },
           {
             target: ".nomatch",
@@ -338,7 +343,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
         },
         nomatch: {
           entry: say(
-            "Sorry, I don't understand that. Please tell me what time week the meeting is."
+            "Sorry, I don't understand that. Please tell me what time the meeting is."
           ),
           on: { ENDSPEECH: "ask" },
         },
@@ -351,7 +356,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
         RECOGNISED: [
           {
             target: "confirmWholeDayMeeting",
-            cond: (context) => isAffirmative(context),
+            cond: (context) => isIntent(context, "affirmative"),
 	    actions: assign({
 	       time: (context) => null
 	    }),
@@ -396,12 +401,12 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
       on: {
         RECOGNISED: [
           {
-            target: "createMeeting",
-            cond: (context) => isNegatory(context),
+            target: "info",
+            cond: (context) => isIntent(context, "affirmative"),
           },
           {
-            target: "info",
-            cond: (context) => isAffirmative(context),
+            target: "welcome",
+            cond: (context) => isIntent(context, "negatory"),
           },
           {
             target: ".nomatch",
@@ -434,11 +439,11 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
         RECOGNISED: [
           {
             target: "info",
-            cond: (context) => isAffirmative(context),
+            cond: (context) => isIntent(context, "affirmative"),
           },
           {
             target: "createMeeting",
-            cond: (context) => isNegatory(context),
+            cond: (context) => isIntent(context, "negatory"),
           },
           {
             target: ".nomatch",
