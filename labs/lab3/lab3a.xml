@@ -1,0 +1,16 @@
+<!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{"VoiceNameToIdMapItems":[{"Id":"1fcefcc6-c578-4aec-99fa-bcd38dfa0a02","Name":"Microsoft Server Speech Text to Speech Voice (en-US, JaneNeural)","ShortName":"en-US-JaneNeural","Locale":"en-US","VoiceType":"StandardVoice"}]}-->
+<!--ID=FCB40C2B-1F9F-4C26-B1A1-CF8E67BE07D1;Version=1|{"Files":{}}-->
+<!--ID=5B95B1CC-2C7B-494F-B746-CF22A0E779B7;Version=1|{"Locales":{"en-US":{"AutoApplyCustomLexiconFiles":[{}]}}}-->
+<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-US"><voice name="en-US-JaneNeural">
+I have your calendar <prosody contour="(25%, +89%) (35%, 20%) (46%, -30%)">open</prosody>. 
+<break strength="medium" /> 
+For what <prosody contour="(27%, +65%) (74%, +66%)">date? </prosody>
+<break strength="medium" /> 
+What <prosody pitch="+40.00%" contour="(11%, +82%)">time</prosody> would you like to start? 
+<break strength="medium" /> 
+How much time do you want to <prosody contour="(48%, +12%) (56%, +86%) (70%, +20%) (60%, +87%)">block out? </prosody>
+<break strength="medium" /> 
+What shall we <prosody contour="(9%, +79%) (51%, -15%)">call</prosody> this? 
+<break strength="medium" /> 
+OK, meeting with beyoncé on <prosody contour="(71%, -54%)">Friday</prosody> for the <prosody rate="x-slow">whole</prosody> day
+</voice></speak>
