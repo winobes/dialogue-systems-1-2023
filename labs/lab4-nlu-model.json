@@ -1,0 +1,583 @@
+{
+    "projectFileVersion": "2022-10-01-preview",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+        "projectKind": "Conversation",
+        "settings": {
+            "confidenceThreshold": 0
+        },
+        "projectName": "appointment",
+        "multilingual": false,
+        "description": "",
+        "language": "en-us"
+    },
+    "assets": {
+        "projectKind": "Conversation",
+        "intents": [
+            {
+                "category": "None"
+            },
+            {
+                "category": "who is"
+            },
+            {
+                "category": "create a meeting"
+            },
+            {
+                "category": "affirmative"
+            },
+            {
+                "category": "negatory"
+            }
+        ],
+        "entities": [
+            {
+                "category": "victim",
+                "compositionSetting": "combineComponents",
+                "prebuilts": [
+                    {
+                        "category": "Person.Name"
+                    }
+                ],
+                "requiredComponents": [
+                    "learned"
+                ]
+            },
+            {
+                "category": "title",
+                "compositionSetting": "combineComponents",
+                "regex": {
+                    "expressions": [
+                        {
+                            "regexKey": "title",
+                            "language": "en-us",
+                            "regexPattern": ".*"
+                        }
+                    ]
+                },
+                "requiredComponents": [
+                    "regex"
+                ]
+            },
+            {
+                "category": "day",
+                "compositionSetting": "combineComponents",
+                "regex": {
+                    "expressions": [
+                        {
+                            "regexKey": "day",
+                            "language": "en-us",
+                            "regexPattern": "([^\\s]+day)"
+                        }
+                    ]
+                }
+            },
+            {
+                "category": "time",
+                "compositionSetting": "combineComponents",
+                "prebuilts": [
+                    {
+                        "category": "Quantity.Ordinal"
+                    },
+                    {
+                        "category": "DateTime"
+                    }
+                ],
+                "regex": {
+                    "expressions": [
+                        {
+                            "regexKey": "time",
+                            "language": "en-us",
+                            "regexPattern": "(\\d+)"
+                        }
+                    ]
+                }
+            }
+        ],
+        "utterances": [
+            {
+                "text": "nope",
+                "language": "en-us",
+                "intent": "negatory",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "negatory",
+                "language": "en-us",
+                "intent": "negatory",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "certainly no",
+                "language": "en-us",
+                "intent": "negatory",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "no thank you",
+                "language": "en-us",
+                "intent": "negatory",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "i would not",
+                "language": "en-us",
+                "intent": "negatory",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "definitely not",
+                "language": "en-us",
+                "intent": "negatory",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "ut uh",
+                "language": "en-us",
+                "intent": "negatory",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "nah ",
+                "language": "en-us",
+                "intent": "negatory",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "no",
+                "language": "en-us",
+                "intent": "negatory",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yes please",
+                "language": "en-us",
+                "intent": "affirmative",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "please.",
+                "language": "en-us",
+                "intent": "affirmative",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yea",
+                "language": "en-us",
+                "intent": "affirmative",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "sure",
+                "language": "en-us",
+                "intent": "affirmative",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "okay",
+                "language": "en-us",
+                "intent": "affirmative",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "okay sure",
+                "language": "en-us",
+                "intent": "affirmative",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "for sure",
+                "language": "en-us",
+                "intent": "affirmative",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "of course",
+                "language": "en-us",
+                "intent": "affirmative",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yeah",
+                "language": "en-us",
+                "intent": "affirmative",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "definitely yes",
+                "language": "en-us",
+                "intent": "affirmative",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yes",
+                "language": "en-us",
+                "intent": "affirmative",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Lee Sedol anyway",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 7,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tell me something about Greta Garbo",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 24,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you tell me about Nina Simone?",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 22,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to know about Elvis Presley",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 21,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who is Alexander McQueen?",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 7,
+                        "length": 17
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who is Barrack Obama",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 7,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who is Tina Turner?",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 7,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Leonard Cohen?",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 7,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who is John Lennon",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 7,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Immanuel Kant?",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 7,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who is Kevin Bacon?",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 7,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Say who Beyoncé is",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 8,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to know about Lee Sedol.",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 21,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Add a meeting",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Schedule an event",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Please create a new meeting in my calendar",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "New calendar event.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Add a meeting to the calendar",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Schedule a meeting",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Create a new meeting.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "New meeting.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Please create a meeting.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Create a meeting.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Please tell me who Bill Gates is.",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 19,
+                        "length": 10
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you tell me about Bill Gates?",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 22,
+                        "length": 10
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tell me something about Beyoncé.",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 24,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tell me about Lee Sedol.",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 14,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you tell me who Beyoncé is?",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 20,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Lee Sedol",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 7,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'd like to know who Bill Gates is",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 21,
+                        "length": 10
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Bill Gates",
+                "language": "en-us",
+                "intent": "who is",
+                "entities": [
+                    {
+                        "category": "victim",
+                        "offset": 7,
+                        "length": 10
+                    }
+                ],
+                "dataset": "Train"
+            }
+        ]
+    }
+}
