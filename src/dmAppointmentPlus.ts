@@ -73,10 +73,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
 
         welcome: {
           initial: "prompt",
-          entry: [
-            assign({promptCount: (context) => 0, userInput: (context) => false}),
-            send("RESETPROMPT")
-          ],
+          entry: send("RESETPROMPT"),
           on: {
             RECOGNISED: [
               {
@@ -111,9 +108,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
                 PROMPT3: {actions: say("To create a calendar event, try saying 'create a meeting'. Or if you want to know about who someone is, try asking a question like this: 'who is Beyoncé?'")},
               }
             },
-            ask: {
-              entry: send("LISTEN"),
-            },
+            ask: { entry: send("LISTEN") },
             nomatch: {
               entry: say("I didn't understand that."),
               on: { ENDSPEECH: "prompt" },
@@ -169,7 +164,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
             saywhois: {
               entry: send((context) => ({
                 type: "SPEAK",
-                value: `${context.victimInfo.Abstract}`,
+                value: `${context.victimInfo.Abstract.slice(0,20)}`,
               })),
             },
           }
@@ -177,6 +172,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
 
         meetVictim: {
           initial: "prompt",
+	        entry: send("RESETPROMPT"),
           on: {
             RECOGNISED: [
               {
@@ -197,25 +193,24 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
               {
                 target: ".nomatch",
               },
-            ]
+            ],
+            TIMEOUT: ".prompt",
+            RESET: "idle",
           },
           states: {
             prompt: {
-              entry: send((context) => ({
-                type: "SPEAK",
-                value: `Do you want to meet ${context.victim}?`
-              })),
-              on: { ENDSPEECH: "ask" },
+              entry: send("PROMPT"),
+	            on: {
+                ENDSPEECH: "ask" ,
+                PROMPT1: {actions: send((context) => ({type:"SPEAK", value:`Do you want to meet ${context.victim}?`}))},
+                PROMPT2: {actions: send((context) => ({type:"SPEAK", value:`I told you who ${context.victim} is. I can set up a meeting with them if you want. Do you want me to set up a meeting?`}))},
+                PROMPT3: {actions: send((context) => ({type:"SPEAK", value:`Should I schedule a meeting with ${context.victim}?`}))},
+              }
             },
-            ask: {
-              entry: send("LISTEN"),
-            },
+            ask: { entry: send("LISTEN") },
             nomatch: {
-              entry: send((context) => ({
-                type: "SPEAK",
-                value: `Sorry, I don't understand that. Do you want to meet ${context.victim} yes or no??`
-              })),
-              on: { ENDSPEECH: "ask" },
+              entry: say("I didn't understand that."),
+              on: { ENDSPEECH: "prompt" },
             },
           }
         },
@@ -230,12 +225,13 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
 
         createMeeting: {
           initial: "prompt",
+	        entry: send("RESETPROMPT"),
           on: {
             RECOGNISED: [
-        {
-          target: "createMeetingHelp",
-          cond: (context) => isUtterance(context, "help"),
-        },
+              {
+                target: "createMeetingHelp",
+                cond: (context) => isUtterance(context, "help"),
+              },
               {
                 target: "askDay",
                 cond: (context) => !!getEntity(context, "title"),
@@ -247,23 +243,25 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
                 target: ".nomatch",
               },
             ],
-            TIMEOUT: "idle",
+            TIMEOUT: ".prompt",
+            RESET: "idle",
           },
           states: {
             prompt: {
-              entry: say("Let's create a meeting. What is the meeting about?"),
-              on: { ENDSPEECH: "ask" },
+              entry: send("PROMPT"),
+	            on: {
+                ENDSPEECH: "ask" ,
+                PROMPT1: {actions: say("What is the meeting about?")},
+                PROMPT2: {actions: say("Tell me what you want the meeting to be called.")},
+                PROMPT3: {actions: say("Give me a meeting title.")},
+              }
             },
-            ask: {
-              entry: send("LISTEN"),
-            },
+            ask: { entry: send("LISTEN") },
             nomatch: {
-              entry: say(
-                "Sorry, I don't know what it is. Please tell me something I know."
-              ),
-              on: { ENDSPEECH: "ask" },
+              entry: say("I didn't understand that."),
+              on: { ENDSPEECH: "prompt" },
             },
-          },
+          }
         },
 
         createMeetingHelp: {
@@ -276,6 +274,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
 
         askDay: {
           initial: "prompt",
+	        entry: send("RESETPROMPT"),
           on: {
             RECOGNISED: [
               {
@@ -290,26 +289,29 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
               },
             ],
             TIMEOUT: ".prompt",
+            RESET: "idle",
           },
           states: {
             prompt: {
-              entry: say("What day is the meeting?"),
-              on: { ENDSPEECH: "ask" },
+              entry: send("PROMPT"),
+	            on: {
+                ENDSPEECH: "ask" ,
+                PROMPT1: {actions: say("What day?")},
+                PROMPT2: {actions: say("What day of the week is the meeting?")},
+                PROMPT3: {actions: say("For which day of the week do you want me to schedule the meeting?")},
+              }
             },
-            ask: {
-              entry: send("LISTEN"),
-            },
+            ask: { entry: send("LISTEN") },
             nomatch: {
-              entry: say(
-                "Sorry, I don't understand that. Please tell me what day of the week the meeting is."
-              ),
-              on: { ENDSPEECH: "ask" },
+              entry: say("I didn't understand that."),
+              on: { ENDSPEECH: "prompt" },
             },
-          },
+          }
         },
 
         time: {
           initial: "prompt",
+	        entry: send("RESETPROMPT"),
           on: {
             RECOGNISED: [
               {
@@ -324,11 +326,17 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
               },
             ],
             TIMEOUT: ".prompt",
+            RESET: "idle",
           },
           states: {
             prompt: {
-              entry: say("What time is the meeting?"),
-              on: { ENDSPEECH: "ask" },
+              entry: send("PROMPT"),
+	            on: {
+                ENDSPEECH: "ask" ,
+                PROMPT1: {actions: say("For what time?")},
+                PROMPT2: {actions: say("What time is the meeting?")},
+                PROMPT3: {actions: say("What time do you want me to schedule the meeting for?")},
+              }
             },
             ask: {
               entry: send("LISTEN"),
@@ -352,18 +360,19 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
 
         wholeDay: {
           initial: "prompt",
+	        entry: send("RESETPROMPT"),
           on: {
             RECOGNISED: [
-        {
-          target: "wholeDayHelp",
-          cond: (context) => isUtterance(context, "help")
-        },
+              {
+                target: "wholeDayHelp",
+                cond: (context) => isUtterance(context, "help")
+              },
               {
                 target: "confirmMeeting",
                 cond: (context) => isIntent(context, "affirmative"),
-          actions: assign({
-             time: (context) => null
-          }),
+                actions: assign({
+                  time: (context) => null
+                }),
               },
               {
                 target: "time",
@@ -374,22 +383,24 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
               },
             ],
             TIMEOUT: ".prompt",
+            RESET: "idle",
           },
           states: {
             prompt: {
-              entry: say("Will it take the whole day?"),
-              on: { ENDSPEECH: "ask" },
+              entry: send("PROMPT"),
+	            on: {
+                ENDSPEECH: "ask" ,
+                PROMPT1: {actions: say("Will it take the whole day?")},
+                PROMPT2: {actions: say("Is it a whole-day meeting?")},
+                PROMPT3: {actions: say("If you want me to schedule it for the whole day say 'yes'. Or say 'no' if you want to schedule it for a particular time.")},
+              }
             },
-            ask: {
-              entry: send("LISTEN"),
-            },
+            ask: { entry: send("LISTEN") },
             nomatch: {
-              entry: say(
-                "Sorry, I don't understand that. Will it be the whole day yes or no??"
-              ),
-              on: { ENDSPEECH: "ask" },
+              entry: say("I didn't understand that."),
+              on: { ENDSPEECH: "prompt" },
             },
-          },
+          }
         },
 
         wholeDayHelp: {
@@ -454,7 +465,6 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
         },
 
       }
-
     },
 
     prompt: {
