@@ -8,14 +8,25 @@ function prompt(context:SDSContext, text: string): Action<SDSContext, SDSEvent>{
   return [say(text), assign({promtCount: (context) => context.promptCount + 1})]
 }
 
-const getEntity = (context: SDSContext, entity: string) => {
-  for (var ent of context.nluResult.prediction.entities){
+const getConfirmedEntity = (context: SDSContext, entity: string) => {
+  for (var ent of context.confirmedEnts){
     if (ent.category == entity) {
       return ent.text;
     }
   }
   return false; 
 }
+
+const getEntity = (context: SDSContext, entity: string) => {
+  // lowercase the utterance and remove tailing "."
+  for (var ent of context.nluResult.prediction.entities) {
+    if (ent.category == entity) {
+      return ent.text
+    }
+  }
+  return false;
+};
+
 
 const isIntent = (context: SDSContext, intent: string) => {
   if (context.nluResult.prediction.topIntent == intent) {
@@ -24,31 +35,42 @@ const isIntent = (context: SDSContext, intent: string) => {
   return false;
 }
 
-const isAffirmative = (context: SDSContext) => {
-  // lowercase the utterance and remove tailing "."
-  let u = context.recResult[0].utterance.toLowerCase().replace(/\.$/g, "");
-  if (u == 'yes') {
-    return true
+const abbreviateAbstract = (abstract: string) => {
+  var firstDotIdx = abstract.indexOf('. ')
+  if (firstDotIdx == -1) {
+    return abstract
   }
-  return false;
-};
-
-const isNegatory = (context: SDSContext) => {
-  // lowercase the utterance and remove tailing "."
-  let u = context.recResult[0].utterance.toLowerCase().replace(/\.$/g, "");
-  if (u == 'no') {
-    return true
+  else {
+    return abstract.slice(0, firstDotIdx)
   }
-  return false;
-};
-
-const isUtterance = (context: SDSContext, utt: string) => {
-  let u = context.recResult[0].utterance.toLowerCase().replace(/\.$/g, "");
-  if (u == utt) {
-    return true;
-  }
-  return false;
 }
+
+const intentCR = (context: SDSContext) => {
+  var intent = context.nluResult.prediction.topIntent
+  if (intent == 'affirmative') {
+    return "Is that a 'yes'?"
+  }
+  else if (intent == 'negatory') {
+    return "Is that a 'no'?"
+  }
+  else if (intent == 'create a meeting'){
+    return "Did you want me to create a meeting?"
+  }
+  else if (intent == 'who is') {
+    var victim = getEntity(context, 'victim')
+    if (victim) {
+      return `Sorry, did you mean to ask who ${victim} is?`
+    }
+    else {
+      return "Sorry, did you mean to ask who someone is?"
+    }
+  }
+  else {
+    return `Did you mean ${intent}?`
+  }
+}
+
+
 
 export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
   type: 'parallel',
@@ -73,29 +95,29 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
 
         welcome: {
           initial: "prompt",
-          entry: send("RESETPROMPT"),
+          entry: [send("RESETPROMPT"), send("CONFIRMINTENTS")],
           on: {
-            RECOGNISED: [
+            UNDERSTOOD: [
               {
                 target: "createMeeting",
-                cond: (context) => isIntent(context, "create a meeting"),
+                cond: (context) => context.confirmedIntent == "create a meeting",
               },
               {
                 target: "tellWhoIs",
-                cond: (context) => isIntent(context, "who is") && !!getEntity(context, "victim"),
+                cond: (context) => context.confirmedIntent == "who is" && !!getConfirmedEntity(context, "victim"),
                 actions: assign({
-                  victim: (context) => getEntity(context, "victim"),
+                  victim: (context) => getConfirmedEntity(context, "victim"),
                 }),
               },
               {
                 target: "welcomeHelp",
-                cond: (context) => isUtterance(context, "help")
+                cond: (context) => context.confirmedIntent == "get help",
               },
               {
                 target: ".nomatch",
               },
             ],
-            TIMEOUT: ".prompt",
+            NOTUNDERSTOOD: ".prompt",
             RESET: "idle",
           },
           states: {
@@ -108,7 +130,10 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
                 PROMPT3: {actions: say("To create a calendar event, try saying 'create a meeting'. Or if you want to know about who someone is, try asking a question like this: 'who is Beyoncé?'")},
               }
             },
-            ask: { entry: send("LISTEN") },
+            ask: { 
+              entry: send("LISTEN"),
+              on: { TIMEOUT: "prompt", },
+            },
             nomatch: {
               entry: say("I didn't understand that."),
               on: { ENDSPEECH: "prompt" },
@@ -164,7 +189,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
             saywhois: {
               entry: send((context) => ({
                 type: "SPEAK",
-                value: `${context.victimInfo.Abstract.slice(0,20)}`,
+                value: `${abbreviateAbstract(context.victimInfo.Abstract)}`,
               })),
             },
           }
@@ -172,29 +197,30 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
 
         meetVictim: {
           initial: "prompt",
-	        entry: send("RESETPROMPT"),
+	        entry: [send("RESETPROMPT"), send("CONFIRMINTENTS") ],
           on: {
-            RECOGNISED: [
+            UNDERSTOOD: [
               {
                 target: "meetVictimHelp",
-                cond: (context) => isUtterance(context, "help")
+                cond: (context) => tent(context, "get help"),
+                cond: (context) => context.confirmedIntent == "get help",
               },
               {
                 target: "askDay",
-                cond: (context) => isIntent(context, "affirmative"),
+                cond: (context) => context.confirmedIntent == "affirmative",
                 actions: assign({
                   title: (context) => `meeting with ${context.victim}`
                 }),
               },
               {
                 target: "idle",
-                cond: (context) => isIntent(context, "negatory"),
+                cond: (context) => context.confirmedIntent == "negatory",
               },
               {
                 target: ".nomatch",
               },
             ],
-            TIMEOUT: ".prompt",
+            NOTUNDERSTOOD: ".prompt",
             RESET: "idle",
           },
           states: {
@@ -207,7 +233,10 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
                 PROMPT3: {actions: send((context) => ({type:"SPEAK", value:`Should I schedule a meeting with ${context.victim}?`}))},
               }
             },
-            ask: { entry: send("LISTEN") },
+            ask: { 
+              entry: send("LISTEN"),
+              on: { TIMEOUT: "prompt", },
+            },
             nomatch: {
               entry: say("I didn't understand that."),
               on: { ENDSPEECH: "prompt" },
@@ -225,12 +254,13 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
 
         createMeeting: {
           initial: "prompt",
-	        entry: send("RESETPROMPT"),
+	        entry: [ send("RESETPROMPT"), send("FREESPEECH") ],
+          exit: send("CONFIRMINTENTS"),
           on: {
             RECOGNISED: [
               {
                 target: "createMeetingHelp",
-                cond: (context) => isUtterance(context, "help"),
+                cond: (context) => context.confirmedIntent == "help",
               },
               {
                 target: "askDay",
@@ -243,7 +273,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
                 target: ".nomatch",
               },
             ],
-            TIMEOUT: ".prompt",
+            NOTUNDERSTOOD: ".prompt",
             RESET: "idle",
           },
           states: {
@@ -256,7 +286,10 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
                 PROMPT3: {actions: say("Give me a meeting title.")},
               }
             },
-            ask: { entry: send("LISTEN") },
+            ask: { 
+              entry: send("LISTEN"),
+              on: { TIMEOUT: "prompt", },
+            },
             nomatch: {
               entry: say("I didn't understand that."),
               on: { ENDSPEECH: "prompt" },
@@ -274,7 +307,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
 
         askDay: {
           initial: "prompt",
-	        entry: send("RESETPROMPT"),
+	        entry: [send("RESETPROMPT"), send("FREESPEECH")],
           on: {
             RECOGNISED: [
               {
@@ -311,7 +344,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
 
         time: {
           initial: "prompt",
-	        entry: send("RESETPROMPT"),
+	        entry: [send("RESETPROMPT"), send("FREESPEECH")],
           on: {
             RECOGNISED: [
               {
@@ -360,29 +393,29 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
 
         wholeDay: {
           initial: "prompt",
-	        entry: send("RESETPROMPT"),
+	        entry: [ send("RESETPROMPT"), send("CONFIRMINTENTS") ],
           on: {
-            RECOGNISED: [
+            UNDERSTOOD: [
               {
                 target: "wholeDayHelp",
-                cond: (context) => isUtterance(context, "help")
+                cond: (context) => context.confirmedIntent == "get help",
               },
               {
                 target: "confirmMeeting",
-                cond: (context) => isIntent(context, "affirmative"),
+                cond: (context) => context.confirmedIntent == "affirmative",
                 actions: assign({
                   time: (context) => null
                 }),
               },
               {
                 target: "time",
-                cond: (context) => isNegatory(context),
+                cond: (context) => context.confirmedIntent == "negatory",
               },
               {
                 target: ".nomatch",
               },
             ],
-            TIMEOUT: ".prompt",
+            NOTUNDERSTOOD: ".prompt",
             RESET: "idle",
           },
           states: {
@@ -395,7 +428,10 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
                 PROMPT3: {actions: say("If you want me to schedule it for the whole day say 'yes'. Or say 'no' if you want to schedule it for a particular time.")},
               }
             },
-            ask: { entry: send("LISTEN") },
+            ask: { 
+              entry: send("LISTEN"),
+              on: { TIMEOUT: "prompt", },
+            },
             nomatch: {
               entry: say("I didn't understand that."),
               on: { ENDSPEECH: "prompt" },
@@ -507,6 +543,80 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
         }
       },
       on : {RESETPROMPT: {target: ['.repromptCount.init', '.userInput.no']}}
+    },
+
+    nluConfirm: {
+      initial: 'init',
+      on: { FREESPEECH: '.void', CONFIRMINTENTS: '.init'},
+      states: {
+        void: { },
+        init: { 
+          on: { RECOGNISED: [
+            { 
+              target: 'understood',
+              cond: (context) => context.nluResult.prediction.intents[0].confidenceScore > 0.90,
+              actions: [
+                assign({ pendingIntent: (context) => context.nluResult.prediction.topIntent, }),
+                assign({ pendingEnts: (context) => context.nluResult.prediction.entities, }),
+              ],
+            },
+            { 
+              target: 'clarify',
+              cond: (context) => context.nluResult.prediction.intents[0].confidenceScore < 0.6,
+            },
+            {
+              target: 'confirm', // default action for between high and low thresholds 
+              actions: [assign({ 
+                pendingIntent: (context) => context.nluResult.prediction.topIntent,
+              }),
+                assign({
+                pendingEnts: (context) => context.nluResult.prediction.entities,
+              }),],
+            }
+          ]},
+        },
+        understood: {
+          entry: [ 
+             assign({ confirmedIntent: (context) => context.pendingIntent, }),
+             assign({ confirmedEnts: (context) => context.pendingEnts, }),
+            send("UNDERSTOOD"), send("CONFIRMINTENTS")
+          ],
+        },
+        confirm: { 
+          initial: "prompt",
+          on: {
+            RECOGNISED: [
+              {
+                target: 'understood',
+                cond: (context) => isIntent(context, "affirmative"),
+              },
+              {
+                target: 'clarify',
+              }
+            ]
+          },
+          states: {
+            prompt: {
+              entry: send((context) => ({
+                type: "SPEAK",
+                value: `${intentCR(context)}`
+              })),
+              on: { ENDSPEECH: "ask" },
+            },
+            ask: {
+              entry: send("LISTEN"),
+            },
+          }
+        },
+        clarify: {
+          entry: [ // clarification is handeled by the calling state (e.g. with a re-prompt)
+            assign({ confirmedIntent: (context) => null}),
+            assign({ confirmedEnts: (context) => null }),
+            send("NOTUNDERSTOOD"), send("CONFIRMINTENTS"),
+            say("Let's try again."),
+          ]
+        },
+      },
     }
 
   }

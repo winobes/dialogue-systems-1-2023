@@ -249,11 +249,11 @@ const ReactiveButton = (props: Props): JSX.Element => {
       circleClass = "circle-speaking";
       promptText = "Speaking...";
       break;
-    case props.state.matches({ dm: "idle" }):
+    case props.state.matches({ dm: "flow.idle" }):
       promptText = "Click to start!";
       circleClass = "circle-click";
       break;
-    case props.state.matches({ dm: "init" }):
+    case props.state.matches({ dm: "flow.init" }):
       promptText = "Click to start!";
       circleClass = "circle-click";
       break;
