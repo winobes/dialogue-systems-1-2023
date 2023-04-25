@@ -53,7 +53,10 @@ const intentCR = (context: SDSContext) => {
   else if (intent == 'negatory') {
     return "Is that a 'no'?"
   }
-  else if (intent == 'create a meeting'){
+  else if (intent == 'get help') {
+    return "Are you asking for help?"
+  }
+  else if (intent == 'create a meeting') {
     return "Did you want me to create a meeting?"
   }
   else if (intent == 'who is') {
@@ -202,7 +205,6 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
             UNDERSTOOD: [
               {
                 target: "meetVictimHelp",
-                cond: (context) => tent(context, "get help"),
                 cond: (context) => context.confirmedIntent == "get help",
               },
               {
@@ -260,7 +262,7 @@ export const dmMachine: MachineConfig<SDSContext, any, SDSEvent> = {
             RECOGNISED: [
               {
                 target: "createMeetingHelp",
-                cond: (context) => context.confirmedIntent == "help",
+                cond: (context) => context.confirmedIntent == "get help",
               },
               {
                 target: "askDay",
