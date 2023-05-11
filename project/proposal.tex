@@ -430,8 +430,15 @@ and that uses one or more of the systems of PNM reference described in Section \
       At the end of the game, it may also provide scoring services.
       A go engine is not to be confused with a go AI, which selects among (or provides a ranking of)
       PNMs.}
-  \item Integration with a go AI
+  \item (eventually) Integration with a go AI
 \end{itemize}
+
+For this project, we will focus on competative play and the number-letter coordinate system.
+This is mainly to keep things simple so we can prototype a minimal system to expand from.
+The main task will be to get the go board and engine working.
+For that, we will use the open source board that's used by \url{online-go.com}. 
+The board includes both a React.js UI and a go engine.
+We need to integrate the board and engine with the dialogue system state machine.
 
 \section{References}
 \printbibliography[heading=none]
