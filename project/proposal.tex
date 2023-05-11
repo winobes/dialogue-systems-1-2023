@@ -10,6 +10,7 @@
 \usepackage{longtable}
 \usepackage{color}
 \usepackage{soul}
+\usepackage{multicol}
 
 \DeclareRobustCommand{\hlcyan}[1]{\sethlcolor{cyan}\hl{#1}}
 \DeclareRobustCommand{\hlcyan}[1]{#1}
@@ -65,7 +66,7 @@ This project focuses on two aspects of go culture:
 \textbf{move reference}
 (ways of talking about different possible next moves).
 
-\section{Modes of interaction}
+\section{Modes of interaction}\label{sec:modes}
 
 A \emph{mode of interaction} is related to the idea of a
 language game \citep{wittgensteinPhilosophischeUntersuchungenPhilosophical2009}, or
@@ -148,10 +149,10 @@ discuss what they were thinking,
 and sometimes play out counterfactual variations.
 The norms for this mode of interaction are
 a subject of discussion in the community.
-For example, \textit{Senseis Library}\footnote{https://senseis.xmp.net/?GameReview}
+For example, \textit{Senseis Library}\footnote{\url{https://senseis.xmp.net/?GameReview}}
 makes the following recommendation:
 \begin{quote}
-   Use "Black" and "White" instead of naming the players or using pronouns. This creates an objective discussion which allows both players to learn without their ego getting in the way. 
+   Use ``Black'' and ``White'' instead of naming the players or using pronouns. This creates an objective discussion which allows both players to learn without their ego getting in the way. 
 \end{quote}
 
 Another type of game review is when a stronger player 
@@ -200,7 +201,7 @@ their competitive play against against other people on the internet.
 The streamer will usually comment on the game as it is played,
 and viewers can interact with the streamer and each other through text chat.
 
-\section{Move reference}
+\section{Systems of next-move reference}\label{sec:systems}
 
 As in many \emph{communities of practice} \citep{gumperzSpeechCommunity1972},
 go-playing communities have special lexicons of \emph{jargon} 
@@ -210,20 +211,20 @@ In many western go-playing communities
 some of these terms are borrowed from Japanese.
 
 Such jargon appears in many different situations.
-A board positions might be described as \textit{dangerous for black}.
+A board position might be described as \textit{dangerous for black}.
 Taking the other perspective, one might say that 
 \textit{whit has good aji} (roughly: potential).
 Some players are known to prefer a \textit{fighting game},
 while others are more \textit{passive} and prefer to \textit{build}.
-In this project, we are interested in how one can refer to 
-potential next moves.
-This kind of reference is common in several different modes of interaction,
-perhaps most notably in game review, 
-but also in streaming and commentary and 
-perhaps even in 
-casual competitive play and teaching games.
-In this excerpt from a go stream, I have yellow-highlighted expressions that I think
-are referring to potential next moves:\footnote{%
+In this project, I'm interested in how players refer to 
+possible next moves (PNMs).
+PNM reference is a communicative affordance used
+in several of the modes of interaction discussed in the Section \ref{sec:modes}.
+Such references are essential to game review, streaming and commentary,
+but can also be found in casual competitive play and in teaching games.
+In this excerpt from a go stream, I have highlighted what I think are the
+PNM-referring expressions:%
+\footnote{%
   Technically this was a pre-recorded video (no interaction with the chat), 
   but the live self-commentary format is one used by many streamers.
   Clip here: \url{https://youtu.be/c2sOdbxVtUA?t=247}}
@@ -251,7 +252,7 @@ are referring to potential next moves:\footnote{%
    & \hlcyan{a little two-space}.\\
 17 & I could probably still leave it if I really wanted to [laughs]\\
      & but this could be a good time to try to make the group strong.\\
-18 & You could play \hl{\textbf{R16 here to get a base}} [gesure: medium circle around R14]\\
+18 & You could play \hl{\textbf{R16 here}} to get a base [gesure: medium circle around R14]\\
    & which if you play \hl{\textbf{S16}} you’re basically alive after that. \\
 19 & You could \hl{\textbf{attach here}} [gesture: hover R11] to get something.\\
 20 & Or you could just \hl{\textbf{jump out}} [gesture: hover O14] (...)\\
@@ -264,156 +265,172 @@ are referring to potential next moves:\footnote{%
   \centering
   \includegraphics[width=.5\textwidth]{diagram.png}
   \caption{A snapshot of the board state in lines 17--20 of the stream. The (added) marks show the next-move referenants from lines 17--20 as follows: \textbf{A} -- \textit{R16 to get a base}, \textbf{B} -- \textit{S16}, \textbf{C} -- \textit{attach here}, \textbf{D} -- \textit{jump out} (could include moves at any of the \textbf{X}-marked intersections).}
+  \label{fig:stream-board}
 \end{figure}
 
 \noindent Here are some initial observations:
 \begin{itemize}
-  \item There are at least three different systems of reference used in this short monologue (the three systems, plus one that isn't used here are detailed below). 
-  \item Some referring expressions are ambiguous in particular, line 20 \textit{jump out} could refer to a few different possible moves in the same small area.
+  \item There are at least three different systems of PNM reference used in this short monologue (those three systems, plus one that isn't used here are detailed below). 
+  \item Some referring expressions are ambiguous. 
+    In particular, line 20 \textit{jump out} could refer to a few different possible moves in the same small area (see Figure \ref{fig:stream-board}).
   \item Referring expressions are often used in conjunction with gesture (in this case, the gestures are made with a mouse cursor).
-  \item Many of the same systems of reference are also used to refer to the oponent's previous move. The difference is that previous move reference has the actual move played to draw on as a resource.
+  \item Many of the same systems of reference are also used to refer to the opponent's previous move (line 16 \textit{took his extension}, for example). The difference is that previous move reference has the actual move played to draw on as a resource.
   \item Multiple systems of reference can be used at the same time, as in lines 4 and 18.
-  \item It's difficult to cleanly decide what speech referrs to a possible move and 
-    what asserts something \emph{about} that which is referred. For example, consider 4 (\textit{this attachment that I mentioned before}) and 18 (\textit{play R16 here to get a base}).
+  %\item It's difficult to cleanly decide what speech refers to a possible move and 
+    %what asserts something \emph{about} that which is referred. For example, consider 4 (\textit{this attachment that I mentioned before}) and 18 (\textit{play R16 here to get a base}).
+  \item The game state can help to resolve PNM reference, since typically only a small handful of 
+    moves are ``viable'', and a good player can quickly narrow down the options.
+    This means, however, that the referential potential of an expression can depend on 
+    how strong of players the dialogue participants are.
 \end{itemize}
 
-\noindent Now let's describe the different systems of reference.
+\noindent I can identify at least four distinct systems of PNM reference: 
 
 \paragraph{absolute coordinates}
 
 As in line 18, one can use the coordinates labelled along the edge of the board
 to name a move by the intersection it would occupy.
 
-It's important to note that absolute coordinates are used differently 
-in go than in chess.
+Absolute coordinates don't carry meaning like they do in games like chess.
 In chess, the E4 square has a particular identity understood in terms of its
 strategic value on the board. 
-The name \textit{E4} carries the connotations associated with that identity
-and can be used (among experienecd chess players) to refer to that square
-even if there is no board in the shared context or the board is not labelled.
-In go, this is much less the case. 
-In order for \textit{R16} to be meaningful, both the speaker and listener
+The name \textbf{E4} carries the connotations associated with that identity
+and can be used (among experienced chess players) to refer to that square
+even if there is no board in the shared context or if the board is not labelled.
+In my experience, this is much less the case in go. 
+In order for \textbf{R16} to be meaningful, both the speaker and listener
 need to have joint attention on a board that is labelled with numbers and letters.
-
-Part of the reason for this might be that the standard 19x19 go board has many
-more intersections than there are chess squares. 
+This could be because there are many more intersections in the
+standard 19x19 board than there are squares in on a chess board.
+Furthermore, the go board has $90^\circ$ rotational symmetry,
+meaning that, abstracted away from a particular game state, 
+an absolute coordinate referrs to one of (up to) four intersections
+with identical strategic value.
 
 \paragraph{corner-relative coordinates}
 
+For this reason, it's also possible to refer to a PNM by its position
+relative to the corner.
+Conventionally, the corner-most intersection is referred to as \textbf{1-1}.
+PNMs at intersections up to \textbf{5-5} are commonly referred to using this system.
+
+Since the corners of the board have special strategic value,
+moves near the corners are common in the beginning of the game.
+The corner-relative coordinate system is thus associated with
+talking about initial corner moves and opening sequences (called \textit{joseki}),
+but corner-relative coordinates can also be used to talk about corner play in a particular game.
+To use corner-relative coordinates for PNM reference, 
+the corner in question needs to be disambiguated by 
+context.
+This can be communicative context (we were already talking about that corner), 
+game state (the corner is \emph{unsettled}, meaning that the active player 
+stands to loose out if they don't play there), or both.
+
 \paragraph{demonstratives}
+
+Phrases like \textbf{here}, \textbf{this move}, \textbf{that one}
+and so on, are very common for PNM reference. 
+These expressions can be anaphoric 
+(referring back to a PNM that already been established as a discourse entity),
+or by an accompanying gesture. 
+Again, the game-state context can also be helpful to disambiguate.
 
 \paragraph{functional descriptors}
 
-\section{Project proposal}
+I'm calling this category \emph{functional descriptors} because most of 
+them refer to PNMs by the move's strategic function or related features.
+The following is an exhaustive list of all such expressions I have come
+across in the last few weeks (and thought to take note of).
+My sense is that all of these terms 
+Alternative co-referring forms come after ``;''. 
+More specific variants comes after ``--''.
 
-There basic idea is to implement a system that plays go with the user.
-It should display a go board and accept voice commands from the user for
-where they want play. In the simplest case, the player (or players) can
-play both sides or the system can play randomly.
-
-Further features may include:
-
-\begin{itemize}
-\item
-  More interactive affordances/more natural interaction:
-
-  \begin{itemize}
-  \item
-    \emph{Oops can I take that move back?}
-  \item
-    \emph{Sorry I meant \emph{C14} not \emph{C13}.}
-  \item
-    \emph{Let's start over?}
-  \item
-    \emph{Can I play as black this time?}
-  \item
-    Instead of a coordinate command like \emph{B6}:
-
-    \begin{itemize}
-    \item
-      Player: \emph{I'll \textbf{wedge}.}
-    \item
-      System: \emph{You want to \textbf{wedge} at \emph{B6}?}
-    \item
-      Player: \emph{Yes.}
-    \end{itemize}
-  \end{itemize}
-\item
-  Integration with variable-strength AI players
-\item
-  Teaching modules:
-
-  \begin{itemize}
-  \item
-    basic rules: legal moves, passing
-  \item
-    how to count points
-  \item
-    \emph{the rule of ko}
-  \item
-    basic strategic concepts
-  \end{itemize}
-\item
-  Go terminology: A terminology-teaching routine may be entered through
-  a clarification request (Player \emph{What does \textbf{tenuki}
-  mean}?)
-\item
-  Commentary on player moves (System: \emph{That was a somewhat
-  \textbf{slow} move. Why don't you try \textbf{cutting} instead?}
-  Player: Ok, let's try it.)
-\item
-  Exploring branching game possibilities
-\item
-  Playing \emph{tsumego} (go puzzles)
+\begin{multicols}{2}
+\begin{itemize} 
+  \item jump -- one-space jump, two-space jump, ...
+  \item extend -- one-space extend, two-space extend, ...
+  \item slide -- slide into the corner
+  \item cut -- cross-cut
+  \item push
+  \item peep
+  \item crawl
+  \item connect
+  \item hane -- double hane
+  \item attach
+  \item capture
+  \item atari -- double atari
+  \item clamp
+  \item pincer
+  \item kosumi; diagonal move
+  \item block
+  \item knight's move; keima
+  \item (make a; play the) tiger's mouth
+  \item (make an; play the) empty triangle
+  \item fix (shape, cutting points)
+  \item throw in
+  \item defend
+  \item approach
+  \item escape (to the center)
+  \item invade 
+  \item enclose (the corner); make an enclosure
+  \item threaten to (capture, cut, capture, kill, ladder, ...)
+  \item simplify
+  \item (make an) exchange
+  \item (play the) joseki move
+  \item (play the) AI move
 \end{itemize}
+\end{multicols}
 
-\section{Terminology // move descriptors}
+\noindent My sense is that all of these terms get at least some of
+their PNM referential potential from community-specific common ground.
+That is as opposed to an expression like \emph{the smiley face eye}
+which might be used to refer to a PNM that, if played, would be the eye
+of a smiley face-like shape on the board.
+Such an expression might be understood, but it's not conventional in 
+the same way as these are.
 
-Some terms for go moves like \textbf{cut}, \textbf{wedge},
-\textbf{kosumi} have straight-forward definitions that depend on the
-move's positional relation to nearby stones. Others are more
-judgement-based and may need to take the broader board position into
-account. Recognizing whether a move can be described as a
-\textbf{pincer}, an \textbf{extension}, an \textbf{attachment}, an
-\textbf{invasion}, a \textbf{tenuki}, etc. is entirely non-trivial.
-Similarly, moves may be described as \textbf{slow}, or as an
-\textbf{under-play} or \textbf{over-play}, depending on the move's
-strategic value in the overall game. Even certain straight-forward move
-descriptors can have less-than-literal interpretations: Technically, two
-stones are \textbf{connected} if they are orthogonally adjacent. But
-stones that can not be profitably \textbf{cut} by the opponent (for
-example because of to surrounding \textbf{influence}) may also be
-described as connected.
+What I find interesting about these expressions is that they do more than
+just refer\,---\,they say something about the strategic value of the PNM
+that is referred to. 
+They can carry information about why the speaker might think it is (or isn't)
+worth considering the PNM in question, and what the consequences might be for
+the continuation of the game.
+By using this system of reference, the speaker essentially opens a  
+parallel track of communication about PNMs and their strategic value.
 
-\section{Data / machine learning}\label{data-machine-learning}
+Another feature of this system is its ambiguity. 
+Because these expressions (with some exceptions) derive their referential
+potential from strategic function, they are often ambiguous with respect
+to several PNMs.
+It's often desirable to refer to any of a collection of PNMs that perform
+the same strategic function. Consider line 20, 
+which is ambiguous among D or any of the X-marked squares in Figure \ref{fig:stream-board}. 
+The speaker uses \textit{jump out}, which is a way of protecting a group of stones from
+being captured.
+Using this expression is more efficient than saying \textit{O14, O13, P14 or P13},
+but it also serves the purpose of communicating the \emph{thought process}
+of the speaker.
+For that reason, I suspect that functional reference is an important didactic tool,
+for teaching and learning the patterns of thought used in to play the game.
 
-This opens up the possibility for some multi-modal machine learning. Can
-we train a language model that can ground some of these go terms in
-board positions? It may be possible to scrape an internet corpus that
-can be used to train such a model. Go forums (and wikis) often have
-special syntax for displaying board positions. A normalized/featurized
-version of the board along with the accompanying text may constitute an
-interesting data source for training a contextualized language model.
+
+\section{Project proposal}\label{sec:proposal}
+
+There basic idea is to implement a system that interacts in one or more 
+of the modes of interaction described in Section \ref{sec:modes} 
+and that uses one or more of the systems of PNM reference described in Section \ref{sec:systems}.
 
 \begin{itemize}
-\item
-  \href{https://senseis.xmp.net/?HowDiagramsWork}{Sensei's Library}
-\item
-  \href{https://www.lifein19x19.com/viewtopic.php?f=5\&t=226}{Life in
-  19x19}
-\item
-  Corpora of go commentaries?
-\end{itemize}
-
-\hypertarget{possible-experiments}{%
-\subsection{Possible experiments}\label{possible-experiments}}
-
-\begin{itemize}
-\item
-  What strategies are best for teaching go terminology to beginners? How
-  do visual demonstrations augment linguistic description?
-\item
-  How can follow-up questions / clarification requests be accomodated?
+  \item keep a game state (including aspects that are not visible on the board such as whose turn it is and number of captures)
+  \item displayed a shared game board that reflects the game state
+  \item ability for both the system and the player to interact with the board
+  \item integration with a go engine\footnote{A go engine implements the rules of the game.
+      Given a game state, the go engine 
+      computes legal next-moves and given a move, it computes the next game state.
+      At the end of the game, it may also provide scoring services.
+      A go engine is not to be confused with a go AI, which selects among (or provides a ranking of)
+      PNMs.}
+  \item Integration with a go AI
 \end{itemize}
 
 \section{References}
