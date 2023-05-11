@@ -53,4 +53,10 @@ yarn deploy
 #+end_src
 
 * Feedback
+
+* How to install Bill's project
+
+  - get the goban submodule `git pull --recursive-submodules`
+  - build goban: `cd goban` `yarn install` `yarn link`
+  - link goban: `cd ..` `yarn link goban`
 - 

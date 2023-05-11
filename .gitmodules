@@ -1,3 +1,0 @@
-[submodule "goban"]
-	path = goban
-	url = https://github.com/online-go/goban.git

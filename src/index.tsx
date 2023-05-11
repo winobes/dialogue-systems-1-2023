@@ -4,10 +4,16 @@ import * as ReactDOM from "react-dom";
 import { createMachine, assign, actions, State } from "xstate";
 import { useMachine } from "@xstate/react";
 import { inspect } from "@xstate/inspect";
-import { dmMachine } from "./dmAppointmentPlus";
+import { dmMachine } from "./dmProject";
+
 
 import createSpeechRecognitionPonyfill from "web-speech-cognitive-services/lib/SpeechServices/SpeechToText";
 import createSpeechSynthesisPonyfill from "web-speech-cognitive-services/lib/SpeechServices/TextToSpeech";
+
+import { EventEmitter } from "eventemitter3";
+import { GobanCanvas, GobanMoveError, ScoreEstimator, init_score_estimator} from "goban/lib/goban";
+
+//init_score_estimator();
 
 const { send, cancel } = actions;
 
@@ -186,6 +192,18 @@ const machine = createMachine(
       },
     },
     actions: {
+      makeMove: (context: SDSContext) => {
+        console.log("action", context.userMove)
+        fiddler.emit("MAKEMOVE", context.userMove.x, context.userMove.y);
+      },
+      pass: (context: SDSContext) => {
+        console.log("pass")
+	fiddler.emit("PASS")
+      },
+      makeRandomMove: (context: SDSContext) => {
+        console.log("action", context.userMove);
+        fiddler.emit("MAKERANDOMMOVE");
+      },
       createAudioContext: (context: SDSContext) => {
         context.audioCtx = new ((window as any).AudioContext ||
           (window as any).webkitAudioContext)();
@@ -227,11 +245,11 @@ const machine = createMachine(
   }
 );
 
-interface Props extends React.HTMLAttributes<HTMLElement> {
+interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
   state: State<SDSContext, any, any, any, any>;
   alternative: any;
 }
-const ReactiveButton = (props: Props): JSX.Element => {
+const StatusButton = (props: ButtonProps): JSX.Element => {
   var promptText = "\u00A0";
   var circleClass = "circle";
   switch (true) {
@@ -249,11 +267,11 @@ const ReactiveButton = (props: Props): JSX.Element => {
       circleClass = "circle-speaking";
       promptText = "Speaking...";
       break;
-    case props.state.matches({ dm: "flow.idle" }):
+    case props.state.matches({ dm: "idle" }):
       promptText = "Click to start!";
       circleClass = "circle-click";
       break;
-    case props.state.matches({ dm: "flow.init" }):
+    case props.state.matches({ dm: "init" }):
       promptText = "Click to start!";
       circleClass = "circle-click";
       break;
@@ -275,7 +293,102 @@ const ReactiveButton = (props: Props): JSX.Element => {
   );
 };
 
+const base_config: GobanCanvasConfig = {
+    interactive: true,
+    mode: "puzzle",
+    square_size: 10,
+    draw_top_labels: true,
+    draw_left_labels: true,
+    draw_right_labels: false,
+    draw_bottom_labels: false,
+    game_id: 42,
+    width: 5,
+    height: 5,
+    bounds: {
+        left: 0,
+        right: 4,
+        top: 0,
+        bottom: 4,
+    },
+};
+
+const fiddler = new EventEmitter();
+
+function ReactGoban(): JSX.Element {
+  const container = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+  
+      const config: GobanCanvasConfig = Object.assign(base_config, {
+          board_div: container.current, 
+      });
+
+      goban = new GobanCanvas(config);
+      //se = new ScoreEstimator(goban, goban.engine)
+
+      fiddler.on("MAKEMOVE", (x: number, y: number) => {
+        console.log("placing", x, y);
+        try {
+          goban.engine.place(x,y);
+        } catch (e) {
+          if (e instanceof GobanMoveError) {
+            if (e.message_id == "stone_already_placed_here"){
+              send("STONEALREADY")
+            }
+          } else {
+            throw(e);
+          }
+        }
+      });
+
+      fiddler.on("PASS", () => {
+        goban.engine.pass();
+      });
+
+      fiddler.on("MAKERANDOMMOVE", (x: number, y: number) => {
+        let tries = 0;
+        let success = false;
+        //console.log(goban.engine.estimateScore(5,3));
+        //console.log(se.estimateScore(5,3));
+        while (tries < 30 && !success) {
+          let x = Math.floor(Math.random() * 5);
+          let y = Math.floor(Math.random() * 5);
+          try {
+            console.log("random placing", x, y);
+            goban.engine.place(x,y);
+            success = true;
+          } catch (e) {
+            if (e instanceof GobanMoveError) {
+              if (e.message_id == "stone_already_placed_here"){
+                send("STONEALREADY")
+              }
+            } else {
+              throw(e);
+            }
+          }
+        }
+      });
+
+      return () => {
+        goban.destroy();
+      };
+  }, [container]);
+
+  return (
+      <React.Fragment>
+          <div ref={container} className="goban-container">
+          </div>
+      </React.Fragment>
+  );
+}
+
 function App({ domElement }: any) {
+
+    const [_update, _setUpdate] = React.useState(1);
+    function forceUpdate() {
+        _setUpdate(_update + 1);
+    }
+
   const externalContext = {
     parameters: {
       ttsVoice: domElement.getAttribute("data-tts-voice") || "en-US",
@@ -354,19 +467,18 @@ function App({ domElement }: any) {
     },
   });
 
-  switch (true) {
-    default:
-      return (
-        <div className="App">
-          <ReactiveButton
-            state={state}
-            key={machine.id}
-            alternative={{}}
-            onClick={() => send("CLICK")}
-          />
-        </div>
-      );
-  }
+	return (
+    <div className="App">
+    <StatusButton
+      state={state}
+			key={machine.id}
+			alternative={{}}
+      onClick={() => send("CLICK")}
+      //onClick={() => fiddler.emit("MAKEMOVE")}
+		/>
+    <ReactGoban />
+    </div>
+  );
 }
 
 const getAuthorizationToken = (azureKey: string) =>

@@ -6,7 +6,8 @@
   "private": true,
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "poppers": "^0.1.2"
   },
   "scripts": {
     "start": "parcel src/index.tsx",
@@ -38,6 +39,7 @@
     ]
   },
   "devDependencies": {
+    "@popperjs/core": "^2.11.7",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -47,10 +49,13 @@
     "@types/react-dom": "^17.0.9",
     "@xstate/inspect": "^0.7.0",
     "@xstate/react": "^3.0.1",
+    "bootstrap": "^5.2.3",
+    "react-bootstrap": "^2.7.4",
     "buffer": "^5.5.0",
     "crypto-browserify": "^3.12.0",
     "events": "^3.1.0",
     "gh-pages": "^3.2.3",
+    "goban": "^0.7.6",
     "https-browserify": "^1.0.0",
     "microsoft-cognitiveservices-speech-sdk": "^1.24.1",
     "parcel": "^2.8.3",
