@@ -24,3 +24,17 @@ yarn-error.log*
 
 # pycharm
 .idea
+
+# latex
+*.log
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pdf
+*.run.xml
+*.synctex.gz
