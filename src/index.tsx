@@ -471,8 +471,8 @@ function App({ domElement }: any) {
     <div className="App">
     <StatusButton
       state={state}
-			key={machine.id}
-			alternative={{}}
+      key={machine.id}
+      alternative={{}}
       onClick={() => send("CLICK")}
       //onClick={() => fiddler.emit("MAKEMOVE")}
 		/>
