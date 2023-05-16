@@ -54,9 +54,19 @@ yarn deploy
 
 * Feedback
 
-* How to install Bill's project
+* Project 
 
-  - get the goban submodule `git pull --recursive-submodules`
-  - build goban: `cd goban` `yarn install` `yarn link`
-  - link goban: `cd ..` `yarn link goban`
-- 
+** Install
+
+`goban` is now installed from NPM (included in `package.json`), so the project should run with
+
+#+begin_src
+yarn install
+yarn start
+#+end_src
+
+** TODO
+
+- The goban is very small because bigger square sizes cause the background and the intersections to separate on two lines. May be a bug with goban or may be an unexpected consequence of some implementation detail. Needs investigating.
+- `const fiddler = new EventEmitter();` is a hack. `fiddler` shouldn't be necessary. Instead, we should make the goban engine part of the dialogue state explicitly. This will also allow us to send events from the goban engine to the state machine (currently that doesn't seem possible)
+- `scoreEstimator` needs debugging (errors with function `malloc` not found) -- this is important for ending the game, since the score is usually determined by mutual agreement. 
